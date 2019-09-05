@@ -1,7 +1,14 @@
 #!/bin/bash
 
-mkdir $scratch
+here=$(pwd)
 
-tar -zxf $1 $2 $3 $4 $5 $6 -C $scratch
+mkdir ../scratch
+
+for VARIABLE in $1 $2 $3 $4 $5 $6
+do
+tar -zxf "$VARIABLE" --directory ../scratch
+done
+
+
 
 
