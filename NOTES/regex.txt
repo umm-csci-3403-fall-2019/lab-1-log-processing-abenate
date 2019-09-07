@@ -8,4 +8,7 @@ line: Aug 14 06:00:36 computer_name sshd[26795]: Failed password for invalid use
 regex: (.+ [0-9]{2}):.* Failed password for (.*) from (.*) port
 line: Aug 14 06:00:41 computer_name sshd[26798]: Failed password for root from 218.2.129.13 port 62901 ssh2
 
+The command to write these into a file would be something like this:
+awk 'match($0, /(.+ [0-9]{2}):.*user ([a-z]*) [a-z ]* (.*) port/, groups) {print groups[1] " " groups[2] " " groups[3] }' inputFileName.txt > outputFileName.txt
 
+(I can't remember... is it double or single '>' that appends or overwrites?
