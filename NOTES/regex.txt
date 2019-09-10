@@ -1,4 +1,4 @@
-The regex too used... https://regex101.com/ 
+The regex tool used... https://regex101.com/ 
 
 The corresponding regular expressions should match the correct groups for the corresponding lines
 
@@ -9,6 +9,13 @@ regex: (.+ [0-9]{2}):.* Failed password for (.*) from (.*) port
 line: Aug 14 06:00:41 computer_name sshd[26798]: Failed password for root from 218.2.129.13 port 62901 ssh2
 
 The command to write these into a file would be something like this:
-awk 'match($0, /(.+ [0-9]{2}):.*user ([a-z]*) [a-z ]* (.*) port/, groups) {print groups[1] " " groups[2] " " groups[3] }' inputFileName.txt > outputFileName.txt
+awk 'match($0, /(.+ [0-9]{2}):.*user ([a-z]*) [a-z ]* (.*) port/, groups) {print groups[1] " " groups[2] " " groups[3] }' inputFileName.txt > outputFileName
 
 (I can't remember... is it double or single '>' that appends or overwrites?
+
+UPDATE:
+The regex that I've come up with is this:
+(.+ [0-9]{2}):.* (for|user) (.*) from (.*) port
+
+It captures 4 groups, but we ignore the third group.
+
