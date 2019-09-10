@@ -1,7 +1,5 @@
 #!/bin/bash
-cd ..
 here=$(pwd)
-cd ./bin
 
 mkdir $here/scratch
 
@@ -14,9 +12,9 @@ do
 	cd $here/log_files
 	tar -zxf "$VARIABLE" -C $here/scratch/$dirString
 	
-	cd $here/scratch/$dirString/var/log	
+    #current=$"($here/scratch/$dirString/var/log)"
 
-	$here/bin/process_client_logs.sh 
+	$here/bin/process_client_logs.sh $here/scratch/$dirString
 
 done
 
