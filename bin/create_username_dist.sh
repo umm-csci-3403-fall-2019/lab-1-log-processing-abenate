@@ -11,6 +11,6 @@ cat $1/zeus/failed_login_data.txt >> all_failed_login.txt
 
 awk 'match($0, /[a-zA-Z] .* ([a-z]+) /, groups) {print groups[1]}' all_failed_login.txt | sort | uniq -c > outFileName.txt 
 
-#awk 'match($0, /(.+ [0-9]{2}):.* Failed .* (for|user) (.*) from (.*) port/, groups) {print groups[1] " " groups[3] " " groups[4] }' $1/var/log/* >> $1/failed_login_data.txt
+awk 'match ($0, / *([0-9]*) ([a-z]+)/, groups) {print "data.addRow([\x27"groups[2]"\x27, " groups[1]"]);"}' outFileName.txt > logBody.txt
 
-#[a-zA-Z] .* ([\S]+) 
+./bin/wrap_contents.sh logBody.txt ./html_components/username_dist wrapped_logs.html
