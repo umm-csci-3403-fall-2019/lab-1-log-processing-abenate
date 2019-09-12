@@ -1,31 +1,29 @@
 #!/bin/bash
+
+# This will be useful so we don't have to 'cd'
 here=$(pwd)
 
+# This should be turned into a temp directory later
 mkdir scratch
 
+# for each arg..
 for VARIABLE in $@;
 do
-	#cd $here/scratch
+
+	# extract the stem word from the filename, and create a dir same name
 	dirString=${VARIABLE/_"secure.tgz"}
 	mkdir $here/scratch/$dirString
 
-	#cd $here/log_files
+	# extract the args into the dir of same name
 	tar -zxf "./log_files/$VARIABLE" -C $here/scratch/$dirString
-	
-    #current=$"($here/scratch/$dirString/var/log)"
 
+	# process the client logs
 	bin/process_client_logs.sh $here/scratch/$dirString
 
 done
 
-# cd $here/scratch
-
-# cat cscirepo_secure/var/log/failed_login_data.txt >> failed_login_data.txt 
-# cat ganesha_secure/var/log/failed_login_data.txt >> failed_login_data.txt 
-# cat velcro_secure/var/log/failed_login_data.txt >> failed_login_data.txt 
-# cat discovery_secure/var/log/failed_login_data.txt >> failed_login_data.txt 
-# cat mylar_secure/var/log/failed_login_data.txt >> failed_login_data.txt 
-# cat zeus_secure/var/log/failed_login_data.txt >> failed_login_data.txt 
+# now process the username/counts
+./bin/create_username_dist.sh ./scratch
 
 
 
