@@ -24,6 +24,8 @@ done
 
 # now process the username/counts
 ./bin/create_username_dist.sh ./scratch
+./bin/create_hours_dist.sh ./scratch
+./bin/create_country_dist.sh ./scratch
 
 
 
