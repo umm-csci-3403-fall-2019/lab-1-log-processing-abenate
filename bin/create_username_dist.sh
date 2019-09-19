@@ -8,10 +8,10 @@ do
 done
 
 # Now we extract the names and start sorting/counting
-awk 'match($0, /[a-zA-Z] .* ([a-zA-Z0-9]*) /, groups) {print groups[1]}' $1/all_failed_login.txt | sort | uniq -c > $1/outFileName.txt 
+awk 'match($0, /[a-zA-Z] .* ([a-zA-Z0-9_[:punct:]]*) /, groups) {print groups[1]}' $1/all_failed_login.txt | sort | uniq -c > $1/outFileName.txt 
 
 # Now we format the names/counts so they can go into the HTML
-awk 'match ($0, / *([0-9]*) ([a-zA-Z0-9]*)/, groups) {print "data.addRow([\x27"groups[2]"\x27, " groups[1]"]);"}' $1/outFileName.txt > $1/username_body.html
+awk 'match ($0, / *([0-9]*) ([a-zA-Z0-9_[:punct:]]*)/, groups) {print "data.addRow([\x27"groups[2]"\x27, " groups[1]"]);"}' $1/outFileName.txt > $1/username_body.html
 
 # This does the actual wrapping for the html
 ./bin/wrap_contents.sh $1/username_body.html ./html_components/username_dist $1/username_dist.html

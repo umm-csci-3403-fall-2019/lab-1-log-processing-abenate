@@ -1,31 +1,40 @@
 #!/bin/bash
 
-# This will be useful so we don't have to 'cd'
-here=$(pwd)
-
-# This should be turned into a temp directory later
+# This dir essentially temporary, as it gets deleted later
+# All the work gets done in here.
 mkdir scratch
 
-# for each arg..
+# for each argument passed in (likely a list of files)
 for VARIABLE in $@;
 do
 
-	# extract the stem word from the filename, and create a dir same name
+	# trim secure_tgz off the file name...
 	dirString=${VARIABLE/_"secure.tgz"}
-	mkdir $here/scratch/$dirString
+
+	# ... then trim off the parent directory to give us the stem word
+	dirString=${dirString#l*/}
+
+	# finally make a directory with the name=dirstring
+	mkdir ./scratch/$dirString
 
 	# extract the args into the dir of same name
-	tar -zxf "./log_files/$VARIABLE" -C $here/scratch/$dirString
+	tar -zxf "./$VARIABLE" -C ./scratch/$dirString
 
 	# process the client logs
-	bin/process_client_logs.sh $here/scratch/$dirString
+	bin/process_client_logs.sh ./scratch/$dirString
 
 done
 
-# now process the username/counts
+# now process the usernames/hours/countries
 ./bin/create_username_dist.sh ./scratch
 ./bin/create_hours_dist.sh ./scratch
 ./bin/create_country_dist.sh ./scratch
+
+#Finally, assemble the HTML document with the report on malicious activity
+./bin/assemble_report.sh ./scratch
+
+# Don't forget to delete the directory we did the work in.
+ rm -rf scratch
 
 
 
